@@ -14,14 +14,14 @@
     <p>{{fixNumber(initialFee)}} initial fee +  {{fixNumber(newUrinals)}} per year using our urinals </p>
     <table>
       <tr>
-      <th>Year</th>
+      <th>Total Cost after Year</th>
       <th>Normal Urinals</th>
       <th>Our Urinals</th>
       <th>ROI</th>
       </tr>
 
       <tr v-for="(item, index) in calculateNewUrinals()" v-bind:key="index"> 
-        <td>Total after year {{index}}</td> <td>{{fixNumber(resultUrinals* (index+1))}}</td> <td>{{fixNumber(item)}}</td> <td>{{fixNumber((resultUrinals* (index+1)) - item)}}</td>
+        <td>{{index + 1}}</td> <td>${{fixNumber(resultUrinals* (index+1))}}</td> <td>${{fixNumber(item)}}</td> <td>${{fixNumber((resultUrinals* (index+1)) - item)}}</td>
       </tr>
     </table>
   </div>
@@ -80,20 +80,30 @@ a {
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
-  width: 600px;
+  width: fit-content;
   margin: 0 auto;
 }
 
+input {
+  height: 30px;
+}
 th {
   border: 1px solid #dddddd;
-  text-align: left;
+  text-align: center;
   padding: 8px;
 }
 
+td:first-child {
+  border: 0px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+
+}
 td {
   border: 0px solid #dddddd;
-  text-align: left;
+  text-align: right;
   padding: 8px;
+
 }
 
 tr:nth-child(even) {
