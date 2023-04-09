@@ -1,29 +1,36 @@
 <template>
-  <div >
-    <h2> Urinal Saving Calculator </h2>
+  <div>
+    <h2>URIMAT Urinal Saving Calculator </h2>
     <hr>
-
-    <p> Input the number of people who use your urinals per year: </p> 
-    <input v-model="numPeople" value="8000000" placeholder="800000" type="number" />
-    <p> Input the number of urinals you have: </p> 
+    <p>Input the number of urinals you have: </p>
 
     <input v-model="numUrinals" placeholder="1" value="1" type="number" />
-    <button v-show="false" v-submit="calculateOldUrinals(numPeople,numUrinals)">s</button>
-
-    <p>{{fixNumber(resultUrinals)}} per year using current urinals </p>
-    <p>{{fixNumber(initialFee)}} initial fee +  {{fixNumber(newUrinals)}} per year using our urinals </p>
-    <table>
-      <tr>
-      <th>Total Cost after Year</th>
-      <th>Normal Urinals</th>
-      <th>Our Urinals</th>
-      <th>ROI</th>
-      </tr>
-
-      <tr v-for="(item, index) in calculateNewUrinals()" v-bind:key="index"> 
-        <td>{{index + 1}}</td> <td>${{fixNumber(resultUrinals* (index+1))}}</td> <td>${{fixNumber(item)}}</td> <td>${{fixNumber((resultUrinals* (index+1)) - item)}}</td>
-      </tr>
-    </table>
+    <button v-show="false" v-submit="calculateCO2()">s</button>
+    <div class="table">
+      <table>
+        <tr>
+          <th>kg less of CO2 Emissions</th>
+          <th>Liters of Water Saved</th>
+          <th>Cubic Meters of Water Saved</th>
+          <th>Olympic Swimming pools of water saved</th>
+          <th>Water Saving Dollars*</th>
+        </tr>
+        <tr>
+          <td>{{this.calculateNewUrinals()[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}} kg</td>
+          <td>{{this.calculateNewUrinals()[1].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}} L</td>
+          <td>{{this.calculateNewUrinals()[2].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}} m<sup>3</sup></td>
+          <td>{{this.calculateNewUrinals()[3].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</td>
+          <td>${{this.calculateNewUrinals()[4].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><p class="smalltext">*$5/cubic-meter</p></td>
+        </tr>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -33,30 +40,31 @@ export default {
 
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
-      numPeople: 8000000,
-      numUrinals: 30,
+      msg: '',
+      numUrinals: 1,
       resultUrinals: 0,
       newUrinals: 0,
       initialFee: 0
     }
   },
   methods: {
-    calculateOldUrinals(people, urinals) {
-      this.resultUrinals = ((((people/2) * 3.8)/1000) * 5);
-      this.newUrinals = (190*(people/10000)/urinals);
-      this.initialFee = ((54970/30) * this.numUrinals);
+    calculateWaterSaved () {
+      return (this.numUrinals * 100000)
     },
-    calculateNewUrinals() {
-      return [this.initialFee + this.newUrinals, this.initialFee + this.newUrinals + (190*(this.numPeople/10000)/this.numUrinals), this.initialFee + this.newUrinals + 2*(190*(this.numPeople/10000)/this.numUrinals), this.initialFee + this.newUrinals + 3*(190*(this.numPeople/10000)/this.numUrinals), this.initialFee + this.newUrinals + 4*(190*(this.numPeople/10000)/this.numUrinals)];
+    calculateCO2 () {
+      return this.numUrinals * 17.5
     },
-    fixNumber(num) {
-      return parseFloat(num).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    calculatePools () {
+      return this.numUrinals * 2.5
+    },
+    calculateNewUrinals () {
+      return [this.calculateCO2(), this.calculateWaterSaved(), this.calculateWaterSaved() / 1000, this.calculatePools(), (this.calculateWaterSaved() / 1000) * 5]
+    },
+    fixNumber (num) {
+      return parseFloat(num).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     }
   }
 }
-
-
 
 </script>
 
@@ -78,19 +86,25 @@ a {
 }
 
 table {
+
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: fit-content;
   margin: 0 auto;
+  max-width: 800px;
+  overflow: scroll;
+
 }
 
 input {
   height: 30px;
+  margin-bottom: 3em;
 }
 th {
   border: 1px solid #dddddd;
   text-align: center;
   padding: 8px;
+
 }
 
 td:first-child {
@@ -103,10 +117,20 @@ td {
   border: 0px solid #dddddd;
   text-align: right;
   padding: 8px;
+  overflow: scroll;
 
 }
 
 tr:nth-child(even) {
   background-color: #f0efef;
+}
+.smalltext {
+  font-size:10px;
+}
+
+div.table {
+  max-width: 800px;
+  overflow: scroll;
+  margin: 0 auto;
 }
 </style>

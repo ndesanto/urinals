@@ -6,7 +6,7 @@
 
 <script>
 import urinalCalculator from './components/urinalCalculator'
-
+document.title = 'URIMAT Urinal Saving Calculator'
 export default {
   name: 'App',
   components: {
