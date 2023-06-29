@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>URIMAT Urinal Saving Calculator </h2>
+    <h2>URIMAT Urinal Saving Calculator  </h2>
     <hr>
     <p>Input the number of urinals you have: </p>
 
